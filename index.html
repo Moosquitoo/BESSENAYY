@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portfolio Scroll Horizontal</title>
   <style>
+    /* ...tes @font-face et styles existants... */
     @font-face {
       font-family: 'Allianz Lineal';
       src: url('fonts/AllianzLineal-BlackUltraExpanded.otf') format('opentype');
@@ -63,6 +64,7 @@
       gap: 0.5rem;
       transition: transform 0.3s ease, opacity 0.3s ease;
       pointer-events: auto;
+      background-color: aqua;
     }
   
     .media-wrapper {
@@ -154,27 +156,63 @@
     .project.show-description .description {
       opacity: 1;
     }
+    /* Ajout loader */
+    body.loading .scroll-container {
+      visibility: hidden;
+    }
+
+    #loader {
+      position: fixed;
+      z-index: 1000;
+      background: white;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #ccc;
+      border-top-color: #333;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
   </style>
-  
 </head>
-<body>
+
+<body class="loading">
+  <!-- Loader -->
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
+
   <div class="scroll-container">
     <div id="carousel" class="carousel"></div>
   </div>
 
   <script>
-    
     function formatCollaborators(collaborators) {
-  return collaborators.map((c, i) => {
-    const label = `${i === 0 ? "W/ " : ""}${c.name.toUpperCase()}`;
-    return c.url
-      ? `<a href="${c.url}" target="_blank">${label}</a>`
-      : label;
-  }).join(' + ');
-}
-    
+      return collaborators.map((c, i) => {
+        const label = `${i === 0 ? "W/ " : ""}${c.name.toUpperCase()}`;
+        return c.url
+          ? `<a href="${c.url}" target="_blank">${label}</a>`
+          : label;
+      }).join(' + ');
+    }
+
     const carousel = document.getElementById('carousel');
-  
+
     const projectList = [
       { video: "media/hedgehog.mp4", title: "Fond de tiroir", date: "04.25", number: "001", collaborators: [{name: "Friends&Family", url: "https://cestainsi.com"}], description: "Description du projet 1." },
       { video: "media/pleur.mp4", title: "Pleur minimix", date: "03.24", number: "002", collaborators: [{name: "Cestainsi", url: "https://cestainsi.com"},{name: "Pleur",url: "https:"}], description: "Description du projet 2." },
@@ -183,31 +221,31 @@
       { video: "media/dragon.mp4", title: "Dragon Afghan", date: "02.23", number: "005", collaborators: [{name: "Philippe Chevalier", url: "https://cestainsi.com"}], description: "Description du projet 3." },
       { video: "media/dragon.mp4", title: "Dragon Afghan", date: "02.23", number: "005", collaborators: [{name: "Philippe Chevalier", url: "https://cestainsi.com"}], description: "Description du projet 3." },
     ];
-  
+
     const totalCopies = 3;
     for (let c = 0; c < totalCopies; c++) {
       for (const project of projectList) {
         const div = document.createElement('div');
         div.className = 'project';
-  
+
         let media = '';
-          if (project.video) {
-            media = `
-              <div class="media-wrapper">
-                <video class="project-media" autoplay loop muted playsinline>
-                  <source src="${project.video}" type="video/mp4">
-                  Votre navigateur ne supporte pas la lecture de vidéos HTML5.
-                </video>
-              </div>
-            `;
-          } else {
-            media = `
-              <div class="media-wrapper">
-                <img class="project-media" src="${project.src}" />
-              </div>
-            `;
-          }
-  
+        if (project.video) {
+          media = `
+            <div class="media-wrapper">
+              <video class="project-media" autoplay loop muted playsinline>
+                <source src="${project.video}" type="video/mp4">
+                Votre navigateur ne supporte pas la lecture de vidéos HTML5.
+              </video>
+            </div>
+          `;
+        } else {
+          media = `
+            <div class="media-wrapper">
+              <img class="project-media" src="${project.src}" />
+            </div>
+          `;
+        }
+
         div.innerHTML = `
           ${media}
           <div class="meta-title">
@@ -218,13 +256,13 @@
           <div class="collaborators">${formatCollaborators(project.collaborators)}</div>
           <div class="description">${project.description}</div>
         `;
-  
+
         carousel.appendChild(div);
       }
     }
-  
+
     const projects = Array.from(document.querySelectorAll('.project'));
-  
+
     let itemWidth, totalWidth;
     function updateSizes() {
       const style = getComputedStyle(projects[0]);
@@ -232,17 +270,17 @@
       itemWidth = projects[0].offsetWidth + margin;
       totalWidth = itemWidth * projects.length;
     }
-  
+
     updateSizes();
     window.addEventListener('resize', updateSizes);
-  
+
     let scroll = 0;
     let targetScroll = 0;
     let isUserScrolling = false;
     let scrollTimeout;
     let lastDelta = 0;
     const timeoutMap = new Map();
-  
+
     window.addEventListener('wheel', (e) => {
       lastDelta = e.deltaY;
       targetScroll += e.deltaY;
@@ -253,13 +291,13 @@
         snapToClosestProject();
       }, 150);
     }, { passive: true });
-  
+
     function snapToClosestProject() {
       const centerOffset = (window.innerWidth - itemWidth) / 2;
       const currentIndex = targetScroll / itemWidth;
       const threshold = 0.3;
       let index;
-  
+
       if (lastDelta > 0) {
         const diff = currentIndex - Math.floor(currentIndex);
         index = diff > threshold ? Math.ceil(currentIndex) : Math.round(currentIndex);
@@ -267,13 +305,13 @@
         const diff = Math.ceil(currentIndex) - currentIndex;
         index = diff > threshold ? Math.floor(currentIndex) : Math.round(currentIndex);
       }
-  
+
       targetScroll = index * itemWidth - centerOffset;
     }
-  
+
     function animate() {
       scroll += (targetScroll - scroll) * 0.08;
-  
+
       if (scroll >= totalWidth * 2 / 3) {
         scroll -= totalWidth / 3;
         targetScroll -= totalWidth / 3;
@@ -282,9 +320,9 @@
         scroll += totalWidth / 3;
         targetScroll += totalWidth / 3;
       }
-  
+
       carousel.style.transform = `translateX(${-scroll}px)`;
-  
+
       const centerX = window.innerWidth / 2;
       projects.forEach(project => {
         const rect = project.getBoundingClientRect();
@@ -294,7 +332,7 @@
         const opacity = Math.max(0.3, 1 - distance / 400);
         project.style.transform = `scale(${scale})`;
         project.style.opacity = opacity;
-  
+
         const video = project.querySelector('video');
         if (video) {
           if (distance < 100) {
@@ -303,7 +341,7 @@
             video.pause();
           }
         }
-  
+
         if (distance < 100) {
           if (!timeoutMap.has(project)) {
             const timeout = setTimeout(() => {
@@ -320,26 +358,42 @@
           project.classList.remove("show-description");
         }
       });
-  
+
       requestAnimationFrame(animate);
     }
-  
+
+    // ⏳ Attend que toutes les vidéos soient prêtes avant d'afficher
     window.addEventListener('load', () => {
-      updateSizes();
-      const startIndex = Math.floor(projects.length / 3);
-      const centerOffset = (window.innerWidth - itemWidth) / 2;
-      scroll = targetScroll = startIndex * itemWidth - centerOffset;
+      const videos = document.querySelectorAll('video');
+      const promises = Array.from(videos).map(video => {
+        return new Promise(resolve => {
+          if (video.readyState >= 3) {
+            resolve();
+          } else {
+            video.oncanplaythrough = resolve;
+          }
+        });
+      });
+
+      Promise.all(promises).then(() => {
+        document.body.classList.remove('loading');
+        document.getElementById('loader').style.display = 'none';
+
+        updateSizes();
+        const startIndex = Math.floor(projects.length / 3);
+        const centerOffset = (window.innerWidth - itemWidth) / 2;
+        scroll = targetScroll = startIndex * itemWidth - centerOffset;
+
+        animate();
+      });
     });
-  
+
     projects.forEach((project, index) => {
       project.addEventListener('click', () => {
         const centerOffset = (window.innerWidth - itemWidth) / 2;
         targetScroll = index * itemWidth - centerOffset;
       });
     });
-  
-    animate();
   </script>
-  
 </body>
 </html>
