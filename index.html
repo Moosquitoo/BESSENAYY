@@ -64,7 +64,6 @@
       gap: 0.5rem;
       transition: transform 0.3s ease, opacity 0.3s ease;
       pointer-events: auto;
-      background-color: red;
     }
   
     .media-wrapper {
@@ -218,13 +217,40 @@
 
     const carousel = document.getElementById('carousel');
 
+/*
+  _      _____  _____ _______ ______       _____  _____   ____       _ ______ _______ _____ 
+ | |    |_   _|/ ____|__   __|  ____|     |  __ \|  __ \ / __ \     | |  ____|__   __/ ____|
+ | |      | | | (___    | |  | |__        | |__) | |__) | |  | |    | | |__     | | | (___  
+ | |      | |  \___ \   | |  |  __|       |  ___/|  _  /| |  | |_   | |  __|    | |  \___ \ 
+ | |____ _| |_ ____) |  | |  | |____      | |    | | \ \| |__| | |__| | |____   | |  ____) |
+ |______|_____|_____/   |_|  |______|     |_|    |_|  \_\\____/ \____/|______|  |_| |_____/                                                   
+*/
     const projectList = [
-      { video: "media/hedgehog.mp4", title: "Fond de tiroir", date: "04.25", number: "001", collaborators: [{name: "Friends&Family", url: "https://cestainsi.com"}], description: "Description du projet 1." },
-      { video: "media/pleur.mp4", title: "Pleur minimix", date: "03.24", number: "002", collaborators: [{name: "Cestainsi", url: "https://cestainsi.com"},{name: "Pleur",url: "https:"}], description: "Description du projet 2." },
-      { video: "media/mybeat.mp4", title: "mybeat", date: "02.23", number: "003", collaborators: [{name: "Leo Tuchais", url: "https://cestainsi.com"}], description: "Description du projet 3." },
-      { video: "media/apccasio.mp4", title: "Unreleased apc-casio", date: "02.23", number: "004", collaborators: [{name: "Golgotha", url: "https://cestainsi.com"}], description: "Description du projet 3." },
-      { video: "media/dragon.mp4", title: "Dragon Afghan", date: "02.23", number: "005", collaborators: [{name: "Philippe Chevalier", url: "https://cestainsi.com"}], description: "Description du projet 3." },
-      { video: "media/dragon.mp4", title: "Dragon Afghan", date: "02.23", number: "005", collaborators: [{name: "Philippe Chevalier", url: "https://cestainsi.com"}], description: "Description du projet 3." },
+
+      { video: "media/hedgehog.mp4", title: "Fond de tiroir", date: "04.25", number: "001",
+      collaborators: [{name: "Friends&Family", url: "https://cestainsi.com"}],
+      description: "Description du projet 1." },
+
+      { video: "media/pleur.mp4", title: "Pleur minimix", date: "03.24", number: "002",
+      collaborators: [{name: "Cestainsi", url: "https://cestainsi.com"},{name: "Pleur",url: "https:"}],
+      description: "Description du projet 2." },
+
+      { video: "media/mybeat.mp4", title: "mybeat", date: "02.23", number: "003",
+      collaborators: [{name: "Leo Tuchais", url: "https://cestainsi.com"}],
+      description: "Description du projet 3." },
+
+      { video: "media/apccasio.mp4", title: "Unreleased apc-casio", date: "02.23", number: "004",
+      collaborators: [{name: "Golgotha", url: "https://cestainsi.com"}],
+      description: "Description du projet 3." },
+
+      { video: "media/dragon.mp4", title: "Dragon Afghan", date: "02.23", number: "005",
+      collaborators: [{name: "Philippe Chevalier", url: "https://cestainsi.com"}],
+      description: "Description du projet 3." },
+
+      { video: "media/dragon.mp4", title: "Dragon Afghan", date: "02.23", number: "005",
+      collaborators: [{name: "Philippe Chevalier", url: "https://cestainsi.com"}],
+      description: "Description du projet 3." }
+
     ];
 
     const totalCopies = 3;
