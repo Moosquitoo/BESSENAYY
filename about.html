@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BESSENAYY - ABOUT</title>
+  <style>
+    @font-face {
+      font-family: 'Allianz Lineal';
+      src: url('fonts/AllianzLineal-Regular.otf') format('opentype');
+      font-weight: normal;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Allianz Lineal', sans-serif;
+      background: white;
+      color: rgb(38, 38, 38);
+    }
+
+    .back-link {
+      position: fixed;
+      top: 3.5rem;
+      right: 4rem;
+      z-index: 1000;
+      font-family: 'Allianz Lineal';
+      font-weight: normal;
+      font-size: 0.65rem;
+      color: rgb(38, 38, 38);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      padding-bottom: 2px;
+    }
+
+    .back-link::after {
+      content: '';
+      display: block;
+      width: 0%;
+      height: 1px;
+      background: rgb(38, 38, 38);
+      transition: width 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: rgb(38, 38, 38);
+    }
+
+    .back-link:hover::after {
+      width: 100%;
+    }
+
+    
+    .about-content {
+      max-width: 600px;
+      margin: 20vh auto;
+      padding: 0 2rem;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+  </style>
+</head>
+<body>
+  <a class="back-link" href="index.html">back</a>
+  <div class="about-content">
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed commodo porta enim viverra varius. Vivamus facilisis, elit ut maximus vestibulum, libero est cursus sapien, a suscipit eros elit et ante. In rhoncus diam nec lacinia elementum. Morbi ligula metus, finibus dignissim odio sit amet, lobortis ultricies leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sem massa, volutpat eget tortor in, faucibus egestas nunc. Suspendisse faucibus vitae est sit amet faucibus. Vestibulum eu condimentum mauris. Integer accumsan aliquet magna, sit amet sollicitudin mauris ornare nec. Mauris efficitur fringilla lectus vel iaculis. Pellentesque posuere metus quam, in interdum orci maximus malesuada. Praesent dignissim quis neque tincidunt ornare. Mauris malesuada sem leo, sit amet pulvinar nisl iaculis ac. In nec tempus eros. Phasellus facilisis, dolor eu condimentum eleifend, massa orci gravida leo, eu sollicitudin leo sapien eget nulla. Ut venenatis, enim sodales auctor molestie, ipsum nisl aliquam risus, sed aliquam diam odio et metus.
+    </p>
+<br>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed commodo porta enim viverra varius. Vivamus facilisis, elit ut maximus vestibulum, libero est cursus sapien, a suscipit eros elit et ante. In rhoncus diam nec lacinia elementum. Morbi ligula metus, finibus dignissim odio sit amet, lobortis ultricies leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sem massa, volutpat eget tortor in, faucibus egestas nunc. Suspendisse faucibus vitae est sit amet faucibus. Vestibulum eu condimentum mauris. Integer accumsan aliquet magna, sit amet sollicitudin mauris ornare nec.
+    </p>
+  </div>
+</body>
+</html>
