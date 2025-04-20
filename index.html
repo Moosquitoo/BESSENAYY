@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio Scroll Horizontal</title>
+  <style>
+    @font-face {
+      font-family: 'Allianz Lineal';
+      src: url('fonts/AllianzLineal-BlackUltraExpanded.otf') format('opentype');
+      font-weight: bold;
+      font-style: normal;
+    }
+  
+    @font-face {
+      font-family: 'Allianz Lineal';
+      src: url('fonts/AllianzLineal-LightExpanded.otf') format('opentype');
+      font-weight: lighter;
+      font-style: normal;
+    }
+  
+    @font-face {
+      font-family: 'Allianz Lineal';
+      src: url('fonts/AllianzLineal-Regular.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+  
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    } 
+  
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: white;
+      font-family: 'Allianz Lineal', sans-serif;
+      color: rgb(38, 38, 38);
+    }
+  
+    .scroll-container {
+      height: 100vh;
+      overflow: hidden;
+    }
+  
+    .carousel {
+      display: flex;
+      height: 100vh;
+      align-items: center;
+      white-space: nowrap;
+      will-change: transform;
+    }
+  
+    .project {
+      flex: 0 0 711px;
+      margin: 0 5vw;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      pointer-events: auto;
+    }
+  
+    .media-wrapper {
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+  
+    .project-media {
+      height: 100%;
+      width: auto;
+      object-fit: contain;
+      display: block;
+      max-width: 100%;
+    }
+  
+    .meta-title {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      width: 100%;
+      margin-top: -0.4em;
+    }
+  
+    .meta-title .date {
+      font-family: 'Allianz Lineal';
+      font-weight: normal;
+      font-size: 0.6rem;
+      margin-top: -1em;
+      text-align: right;
+      justify-self: end;
+    }
+  
+    .meta-title .title {
+      font-family: 'Allianz Lineal';
+      font-weight: bold;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      text-align: center;
+      transform: scaleX(1.4) translateY(-1em);
+      letter-spacing: -0.025em;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+  
+    .meta-title .number {
+      font-family: 'Allianz Lineal';
+      font-weight: normal;
+      font-size: 0.6rem;
+      margin-top: -1em;
+      text-align: left;
+      justify-self: start;
+    }
+  
+    .project .collaborators {
+      font-family: 'Allianz Lineal';
+      font-weight: bold;
+      font-size: 0.6rem;
+      text-align: center;
+      transform: scaleX(1.4) translateY(-1em);
+      letter-spacing: -0.025em;
+      margin-top: -1.4em;
+      opacity: 0;
+      transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+    }
+  
+    .project .description {
+      font-family: 'Allianz Lineal';
+      font-weight: lighter;
+      font-size: 0.6rem;
+      text-align: center;
+      margin-top: -1em;
+      opacity: 0;
+      transition: opacity 0.6s ease 1.2s;
+    }
+  
+    .project.show-description .meta-title .title {
+      opacity: 1;
+      transform: scaleX(1.4) translateY(0);
+    }
+  
+    .project.show-description .collaborators {
+      opacity: 1;
+      transform: scaleX(1.4) translateY(0);
+    }
+  
+    .project.show-description .description {
+      opacity: 1;
+    }
+  </style>
+  
+</head>
+<body>
+  <div class="scroll-container">
+    <div id="carousel" class="carousel"></div>
+  </div>
+
+  <script>
+    
+    function formatCollaborators(collaborators) {
+  return collaborators.map((c, i) => {
+    const label = `${i === 0 ? "W/ " : ""}${c.name.toUpperCase()}`;
+    return c.url
+      ? `<a href="${c.url}" target="_blank">${label}</a>`
+      : label;
+  }).join(' + ');
+}
+    
+    const carousel = document.getElementById('carousel');
+  
+    const projectList = [
+      { video: "media/hedgehog.mp4", title: "Fond de tiroir", date: "04.25", number: "001", collaborators: [{name: "Friends&Family", url: "https://cestainsi.com"}], description: "Description du projet 1." },
+      { video: "media/pleur.mp4", title: "Pleur minimix", date: "03.24", number: "002", collaborators: [{name: "Cestainsi", url: "https://cestainsi.com"},{name: "Pleur",url: "https:"}], description: "Description du projet 2." },
+      { video: "media/mybeat.mp4", title: "mybeat", date: "02.23", number: "003", collaborators: [{name: "Leo Tuchais", url: "https://cestainsi.com"}], description: "Description du projet 3." },
+      { video: "media/apccasio.mp4", title: "Unreleased apc-casio", date: "02.23", number: "004", collaborators: [{name: "Golgotha", url: "https://cestainsi.com"}], description: "Description du projet 3." },
+      { video: "media/dragon.mp4", title: "Dragon Afghan", date: "02.23", number: "005", collaborators: [{name: "Philippe Chevalier", url: "https://cestainsi.com"}], description: "Description du projet 3." },
+      { video: "media/dragon.mp4", title: "Dragon Afghan", date: "02.23", number: "005", collaborators: [{name: "Philippe Chevalier", url: "https://cestainsi.com"}], description: "Description du projet 3." },
+    ];
+  
+    const totalCopies = 3;
+    for (let c = 0; c < totalCopies; c++) {
+      for (const project of projectList) {
+        const div = document.createElement('div');
+        div.className = 'project';
+  
+        let media = '';
+          if (project.video) {
+            media = `
+              <div class="media-wrapper">
+                <video class="project-media" autoplay loop muted playsinline>
+                  <source src="${project.video}" type="video/mp4">
+                  Votre navigateur ne supporte pas la lecture de vidéos HTML5.
+                </video>
+              </div>
+            `;
+          } else {
+            media = `
+              <div class="media-wrapper">
+                <img class="project-media" src="${project.src}" />
+              </div>
+            `;
+          }
+  
+        div.innerHTML = `
+          ${media}
+          <div class="meta-title">
+            <span class="number">${project.number}</span>
+            <div class="title">${project.title.toUpperCase()}</div>
+            <span class="date">${project.date}</span>
+          </div>
+          <div class="collaborators">${formatCollaborators(project.collaborators)}</div>
+          <div class="description">${project.description}</div>
+        `;
+  
+        carousel.appendChild(div);
+      }
+    }
+  
+    const projects = Array.from(document.querySelectorAll('.project'));
+  
+    let itemWidth, totalWidth;
+    function updateSizes() {
+      const style = getComputedStyle(projects[0]);
+      const margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+      itemWidth = projects[0].offsetWidth + margin;
+      totalWidth = itemWidth * projects.length;
+    }
+  
+    updateSizes();
+    window.addEventListener('resize', updateSizes);
+  
+    let scroll = 0;
+    let targetScroll = 0;
+    let isUserScrolling = false;
+    let scrollTimeout;
+    let lastDelta = 0;
+    const timeoutMap = new Map();
+  
+    window.addEventListener('wheel', (e) => {
+      lastDelta = e.deltaY;
+      targetScroll += e.deltaY;
+      isUserScrolling = true;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isUserScrolling = false;
+        snapToClosestProject();
+      }, 150);
+    }, { passive: true });
+  
+    function snapToClosestProject() {
+      const centerOffset = (window.innerWidth - itemWidth) / 2;
+      const currentIndex = targetScroll / itemWidth;
+      const threshold = 0.3;
+      let index;
+  
+      if (lastDelta > 0) {
+        const diff = currentIndex - Math.floor(currentIndex);
+        index = diff > threshold ? Math.ceil(currentIndex) : Math.round(currentIndex);
+      } else {
+        const diff = Math.ceil(currentIndex) - currentIndex;
+        index = diff > threshold ? Math.floor(currentIndex) : Math.round(currentIndex);
+      }
+  
+      targetScroll = index * itemWidth - centerOffset;
+    }
+  
+    function animate() {
+      scroll += (targetScroll - scroll) * 0.08;
+  
+      if (scroll >= totalWidth * 2 / 3) {
+        scroll -= totalWidth / 3;
+        targetScroll -= totalWidth / 3;
+      }
+      if (scroll < totalWidth / 3) {
+        scroll += totalWidth / 3;
+        targetScroll += totalWidth / 3;
+      }
+  
+      carousel.style.transform = `translateX(${-scroll}px)`;
+  
+      const centerX = window.innerWidth / 2;
+      projects.forEach(project => {
+        const rect = project.getBoundingClientRect();
+        const projectCenter = rect.left + rect.width / 2;
+        const distance = Math.abs(centerX - projectCenter);
+        const scale = Math.max(0.9, 1 - distance / 500);
+        const opacity = Math.max(0.3, 1 - distance / 400);
+        project.style.transform = `scale(${scale})`;
+        project.style.opacity = opacity;
+  
+        const video = project.querySelector('video');
+        if (video) {
+          if (distance < 100) {
+            video.play();
+          } else {
+            video.pause();
+          }
+        }
+  
+        if (distance < 100) {
+          if (!timeoutMap.has(project)) {
+            const timeout = setTimeout(() => {
+              project.classList.add("show-description");
+              timeoutMap.delete(project);
+            }, 1000);
+            timeoutMap.set(project, timeout);
+          }
+        } else {
+          if (timeoutMap.has(project)) {
+            clearTimeout(timeoutMap.get(project));
+            timeoutMap.delete(project);
+          }
+          project.classList.remove("show-description");
+        }
+      });
+  
+      requestAnimationFrame(animate);
+    }
+  
+    window.addEventListener('load', () => {
+      updateSizes();
+      const startIndex = Math.floor(projects.length / 3);
+      const centerOffset = (window.innerWidth - itemWidth) / 2;
+      scroll = targetScroll = startIndex * itemWidth - centerOffset;
+    });
+  
+    projects.forEach((project, index) => {
+      project.addEventListener('click', () => {
+        const centerOffset = (window.innerWidth - itemWidth) / 2;
+        targetScroll = index * itemWidth - centerOffset;
+      });
+    });
+  
+    animate();
+  </script>
+  
+</body>
+</html>
